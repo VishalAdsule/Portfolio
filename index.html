@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vishal Adsule — Java Developer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.4.1/tailwind.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0e14;
+    --panel:#10151d;
+    --panel2:#161d28;
+    --line:#212a37;
+    --mute:#8a93a3;
+    --paper:#e7ebf1;
+    --acid:#7CF29C;
+    --acid-dim:#7CF29C33;
+    --amber:#F2A65C;
+  }
+  *{ scroll-behavior:smooth; }
+  body{ background:var(--ink); color:var(--paper); font-family:'Space Grotesk',sans-serif; cursor:none; }
+  @media (max-width:768px){ body{ cursor:auto; } }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  ::selection{ background:var(--acid); color:#0a0e14; }
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-track{ background:var(--ink); }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:4px; }
+  ::-webkit-scrollbar-thumb:hover{ background:var(--acid); }
+
+  #cursor-dot, #cursor-ring{ position:fixed; top:0; left:0; pointer-events:none; z-index:9999; border-radius:50%; transform:translate(-50%,-50%); }
+  #cursor-dot{ width:6px; height:6px; background:var(--acid); transition:opacity .2s; }
+  #cursor-ring{ width:32px; height:32px; border:1px solid var(--acid); transition:width .2s,height .2s,border-color .2s,opacity .2s; opacity:.6; }
+  .cursor-grow #cursor-ring{ width:56px; height:56px; background:var(--acid-dim); border-color:transparent; }
+  @media (max-width:768px){ #cursor-dot,#cursor-ring{ display:none; } }
+
+  #progress{ position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--acid),var(--amber)); z-index:60; width:0%; transition:width .1s linear; }
+
+  .glow{ box-shadow:0 0 0 1px var(--line), 0 30px 80px -30px rgba(124,242,156,0.18); }
+  .dot-pulse{ box-shadow:0 0 0 0 rgba(124,242,156,.6); animation:pulse 2s infinite; }
+  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(124,242,156,.5)} 70%{box-shadow:0 0 0 10px rgba(124,242,156,0)} 100%{box-shadow:0 0 0 0 rgba(124,242,156,0)} }
+
+  .typewriter{ overflow:hidden; white-space:nowrap; border-right:2px solid var(--acid); animation: typing 2.6s steps(28,end), blink .8s step-end infinite alternate; }
+  @keyframes typing{ from{width:0} to{width:28ch} }
+  @keyframes blink{ 50%{ border-color:transparent } }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .reveal-stagger > *{ opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal-stagger.in > *{ opacity:1; transform:translateY(0); }
+  .reveal-stagger.in > *:nth-child(1){ transition-delay:.05s; }
+  .reveal-stagger.in > *:nth-child(2){ transition-delay:.15s; }
+  .reveal-stagger.in > *:nth-child(3){ transition-delay:.25s; }
+  .reveal-stagger.in > *:nth-child(4){ transition-delay:.35s; }
+
+  .navlink{ position:relative; }
+  .navlink::after{ content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:var(--acid); transition:width .25s ease; }
+  .navlink.active::after, .navlink:hover::after{ width:100%; }
+  .navlink.active{ color:var(--acid); }
+
+  .tilt-card{ transform-style:preserve-3d; transition:transform .15s ease, border-color .25s ease; }
+
+  .skill-bar-fill{ width:0%; transition:width 1.2s cubic-bezier(.16,1,.3,1); }
+
+  .magnetic{ transition:transform .2s ease; }
+
+  .side-line{ width:1px; height:80px; background:var(--line); }
+
+  .blink-cursor{ animation:blink .8s step-end infinite alternate; }
+
+  .grid-bg{
+    background-image: linear-gradient(rgba(124,242,156,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,242,156,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .copy-tooltip{ opacity:0; pointer-events:none; transition:opacity .2s ease; }
+  .copy-wrap:hover .copy-tooltip, .copy-wrap.show-tip .copy-tooltip{ opacity:1; }
+
+  details > summary{ list-style:none; cursor:pointer; }
+  details > summary::-webkit-details-marker{ display:none; }
+  details[open] .chev{ transform:rotate(90deg); }
+</style>
+</head>
+<body class="antialiased">
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="progress"></div>
+
+<div class="fixed inset-0 grid-bg pointer-events-none" style="mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 10%, transparent 70%)"></div>
+
+<div class="hidden lg:flex flex-col items-center gap-5 fixed left-8 bottom-0 z-40">
+  <a href="https://github.com/VishalAdsule" target="_blank" class="magnetic text-[var(--mute)] hover:text-[var(--acid)] hover:-translate-y-1 transition" data-cursor>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.68.08-.68 1.14.08 1.74 1.17 1.74 1.17 1.01 1.74 2.65 1.24 3.3.95.1-.73.4-1.24.72-1.53-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.03 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.58.23 2.74.11 3.03.73.79 1.17 1.8 1.17 3.04 0 4.35-2.66 5.31-5.19 5.59.41.35.77 1.04.77 2.11 0 1.52-.01 2.75-.01 3.13 0 .3.21.66.79.55A11.03 11.03 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
+  </a>
+  <a href="https://linkedin.com/in/vishaladsule/" target="_blank" class="magnetic text-[var(--mute)] hover:text-[var(--acid)] hover:-translate-y-1 transition" data-cursor>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.15 1.45-2.15 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.27 2.38 4.27 5.47v6.27zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+  </a>
+  <a href="mailto:vishal25adsule2003@gmail.com" class="magnetic text-[var(--mute)] hover:text-[var(--acid)] hover:-translate-y-1 transition" data-cursor>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+  </a>
+  <div class="side-line"></div>
+</div>
+<div class="hidden lg:flex flex-col items-center gap-4 fixed right-8 bottom-0 z-40">
+  <a href="mailto:vishal25adsule2003@gmail.com" class="mono text-xs text-[var(--mute)] hover:text-[var(--acid)] transition" style="writing-mode:vertical-rl;" data-cursor>vishal25adsule2003@gmail.com</a>
+  <div class="side-line"></div>
+</div>
+
+<nav id="navbar" class="fixed top-0 inset-x-0 z-50 backdrop-blur bg-[#0a0e14]/80 border-b border-[var(--line)] transition-transform duration-300">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#top" class="mono text-sm text-[var(--acid)] flex items-center gap-2" data-cursor>
+      <span class="w-2 h-2 rounded-full bg-[var(--acid)] dot-pulse"></span>
+      ~/vishal-adsule
+    </a>
+    <div class="hidden md:flex gap-8 mono text-xs text-[var(--mute)]">
+      <a href="#about" class="navlink" data-cursor>01.about</a>
+      <a href="#projects" class="navlink" data-cursor>02.projects</a>
+      <a href="#skills" class="navlink" data-cursor>03.skills</a>
+      <a href="#certs" class="navlink" data-cursor>04.credentials</a>
+      <a href="#contact" class="navlink" data-cursor>05.contact</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="#contact" class="magnetic mono text-xs px-3 py-1.5 border border-[var(--acid)] text-[var(--acid)] rounded hover:bg-[var(--acid)] hover:text-[#0a0e14] transition" data-cursor>say hi</a>
+      <button id="menu-btn" class="md:hidden text-[var(--paper)]">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden flex-col gap-4 px-6 pb-5 mono text-sm text-[var(--mute)]">
+    <a href="#about" class="mobile-link">01. about</a>
+    <a href="#projects" class="mobile-link">02. projects</a>
+    <a href="#skills" class="mobile-link">03. skills</a>
+    <a href="#certs" class="mobile-link">04. credentials</a>
+    <a href="#contact" class="mobile-link">05. contact</a>
+  </div>
+</nav>
+
+<header id="top" class="max-w-6xl mx-auto px-6 pt-40 pb-28 relative">
+  <p class="mono text-xs text-[var(--mute)] mb-4 opacity-0" id="hero-eyebrow">// resume.compile(success)</p>
+  <h1 class="text-5xl md:text-7xl font-bold leading-tight" id="hero-name">
+    <span class="inline-block overflow-hidden"><span class="block reveal-up">Vishal</span></span>
+    <span class="inline-block overflow-hidden"><span class="block reveal-up text-[var(--mute)]">Adsule.</span></span>
+  </h1>
+  <p class="mono text-lg md:text-xl text-[var(--acid)] mt-5 typewriter">Java Developer in training</p>
+
+  <p class="text-[var(--mute)] mt-8 max-w-2xl text-base leading-relaxed reveal" id="hero-bio">
+    Electronics &amp; Telecommunication graduate from Pune who taught himself Java the
+    way most people learn a language abroad — immersion, mistakes, and a lot of late
+    builds. Comfortable across the stack from JDBC-backed billing systems to LSTM
+    models predicting stock prices.
+  </p>
+
+  <div class="flex flex-wrap gap-3 mt-9 reveal" id="hero-actions">
+    <a href="#projects" class="magnetic mono text-xs px-5 py-3 bg-[var(--acid)] text-[#0a0e14] rounded font-semibold hover:opacity-90 transition" data-cursor>view projects ↓</a>
+    <div class="copy-wrap relative">
+      <button onclick="copyEmail(this)" class="magnetic mono text-xs px-5 py-3 bg-[var(--panel)] border border-[var(--line)] rounded hover:border-[var(--acid)] transition" data-cursor>
+        copy email
+      </button>
+      <span class="copy-tooltip absolute -top-8 left-1/2 -translate-x-1/2 mono text-[10px] bg-[var(--acid)] text-[#0a0e14] px-2 py-1 rounded whitespace-nowrap">copied ✓</span>
+    </div>
+    <a href="tel:+919637209446" class="magnetic mono text-xs px-5 py-3 bg-[var(--panel)] border border-[var(--line)] rounded hover:border-[var(--acid)] transition" data-cursor>+91 96372 09446</a>
+  </div>
+</header>
+
+<section class="max-w-6xl mx-auto px-6 pb-20 reveal-stagger grid grid-cols-2 md:grid-cols-4 gap-6" id="stats">
+  <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-5 text-center hover:border-[var(--acid)]/50 transition">
+    <p class="text-3xl md:text-4xl font-bold text-[var(--acid)] mono"><span class="counter" data-target="2">0</span>+</p>
+    <p class="mono text-xs text-[var(--mute)] mt-1">major projects</p>
+  </div>
+  <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-5 text-center hover:border-[var(--acid)]/50 transition">
+    <p class="text-3xl md:text-4xl font-bold text-[var(--acid)] mono"><span class="counter" data-target="5">0</span></p>
+    <p class="mono text-xs text-[var(--mute)] mt-1">languages known</p>
+  </div>
+  <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-5 text-center hover:border-[var(--acid)]/50 transition">
+    <p class="text-3xl md:text-4xl font-bold text-[var(--acid)] mono"><span class="counter" data-target="2">0</span></p>
+    <p class="mono text-xs text-[var(--mute)] mt-1">certifications</p>
+  </div>
+  <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-5 text-center hover:border-[var(--acid)]/50 transition">
+    <p class="text-3xl md:text-4xl font-bold text-[var(--acid)] mono"><span class="counter" data-target="2025">0</span></p>
+    <p class="mono text-xs text-[var(--mute)] mt-1">graduate year</p>
+  </div>
+</section>
+
+<section id="about" class="max-w-6xl mx-auto px-6 pb-28 reveal">
+  <p class="mono text-xs text-[var(--mute)] mb-2">01 / about</p>
+  <h2 class="text-3xl font-bold mb-8">Who's compiling this page</h2>
+
+  <div class="rounded-xl overflow-hidden glow border border-[var(--line)] tilt-card" id="terminal-card">
+    <div class="bg-[var(--panel2)] px-4 py-3 flex items-center gap-2 border-b border-[var(--line)]">
+      <span class="w-3 h-3 rounded-full bg-[#F2705C]"></span>
+      <span class="w-3 h-3 rounded-full bg-[var(--amber)]"></span>
+      <span class="w-3 h-3 rounded-full bg-[var(--acid)] dot-pulse"></span>
+      <span class="mono text-xs text-[var(--mute)] ml-3">profile.java</span>
+      <span class="mono text-[10px] text-[var(--mute)] ml-auto hidden sm:block">read-only</span>
+    </div>
+    <div class="bg-[var(--panel)] p-6 md:p-8 mono text-sm leading-7 text-[var(--mute)] overflow-x-auto">
+<span class="text-[var(--amber)]">public class</span> <span class="text-[var(--acid)]">VishalAdsule</span> {
+
+  <span class="text-[var(--amber)]">private</span> String education = <span class="text-[var(--paper)]">"B.E. Electronics &amp; Telecommunication, SKNCOE Pune (2025)"</span>;
+  <span class="text-[var(--amber)]">private</span> String[] languages = { <span class="text-[var(--paper)]">"Java"</span>, <span class="text-[var(--paper)]">"Python"</span>, <span class="text-[var(--paper)]">"SQL"</span>, <span class="text-[var(--paper)]">"JavaScript"</span> };
+  <span class="text-[var(--amber)]">private</span> String focus = <span class="text-[var(--paper)]">"backend systems, data pipelines, clean schemas"</span>;
+  <span class="text-[var(--amber)]">private</span> String offDuty = <span class="text-[var(--paper)]">"Battle Royale, adventure, movies"</span>;
+
+  <span class="text-[var(--amber)]">public void</span> <span class="text-[var(--acid)]">build</span>() {
+    System.out.println(<span class="text-[var(--paper)]">"shipped a garage billing system in two weeks"</span>);
+  }
+}<span class="blink-cursor">▌</span>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="max-w-6xl mx-auto px-6 pb-28 reveal">
+  <p class="mono text-xs text-[var(--mute)] mb-2">02 / projects</p>
+  <h2 class="text-3xl font-bold mb-10">Things I've built</h2>
+
+  <div class="grid md:grid-cols-2 gap-6 reveal-stagger" id="project-grid">
+    <article class="tilt-card rounded-xl border border-[var(--line)] bg-[var(--panel)] p-6 hover:border-[var(--acid)]/60 transition relative overflow-hidden group" data-cursor-grow>
+      <div class="absolute -right-10 -top-10 w-32 h-32 bg-[var(--acid)] opacity-0 group-hover:opacity-10 rounded-full blur-2xl transition"></div>
+      <div class="flex items-start justify-between mb-3">
+        <p class="mono text-xs text-[var(--acid)]">June 2025</p>
+        <span class="mono text-[10px] px-2 py-0.5 rounded-full border border-[var(--line)] text-[var(--mute)]">solo build</span>
+      </div>
+      <h3 class="text-xl font-semibold mb-2">Garage Billing System</h3>
+      <p class="text-[var(--mute)] text-sm leading-relaxed mb-4">
+        An automated billing application for a garage — real-time invoicing,
+        payment processing, and job tracking, with a centralized database for
+        customer, vehicle, and service history.
+      </p>
+      <ul class="text-sm text-[var(--mute)] space-y-1.5 mb-5">
+        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Real-time job tracking and inventory management</li>
+        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Centralized records for customers and vehicles</li>
+        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Full service history per vehicle</li>
+      </ul>
+      <div class="flex flex-wrap gap-2 mono text-xs">
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Java</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">JDBC</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">IntelliJ IDEA</span>
+      </div>
+    </article>
+
+    <article class="tilt-card rounded-xl border border-[var(--line)] bg-[var(--panel)] p-6 hover:border-[var(--acid)]/60 transition relative overflow-hidden group" data-cursor-grow>
+      <div class="absolute -right-10 -top-10 w-32 h-32 bg-[var(--amber)] opacity-0 group-hover:opacity-10 rounded-full blur-2xl transition"></div>
+      <div class="flex items-start justify-between mb-3">
+        <p class="mono text-xs text-[var(--acid)]">September 2024</p>
+        <span class="mono text-[10px] px-2 py-0.5 rounded-full border border-[var(--line)] text-[var(--mute)]">ML / data</span>
+      </div>
+      <h3 class="text-xl font-semibold mb-2">Stock Market Prediction Using ML</h3>
+      <p class="text-[var(--mute)] text-sm leading-relaxed mb-4">
+        A deep learning model for real-time stock forecasting using RNN and
+        LSTM networks, fed by an automated data pipeline pulling live data
+        from an API.
+      </p>
+      <ul class="text-sm text-[var(--mute)] space-y-1.5 mb-5">
+        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Automated pipeline for acquiring, cleaning, pre-processing live data</li>
+        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>LSTM benchmarked against traditional statistical models</li>
+        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Owned the full lifecycle, data to evaluation</li>
+      </ul>
+      <div class="flex flex-wrap gap-2 mono text-xs">
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Python</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">LSTM / RNN</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">VS Code</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="skills" class="max-w-6xl mx-auto px-6 pb-28 reveal">
+  <p class="mono text-xs text-[var(--mute)] mb-2">03 / stack</p>
+  <h2 class="text-3xl font-bold mb-10">Skills</h2>
+
+  <div class="grid md:grid-cols-2 gap-x-12 gap-y-5" id="skill-bars">
+    <div class="skill-row">
+      <div class="flex justify-between mono text-xs mb-2"><span>Java</span><span class="text-[var(--acid)]">90%</span></div>
+      <div class="h-1.5 rounded-full bg-[var(--panel2)] overflow-hidden"><div class="skill-bar-fill h-full bg-[var(--acid)]" data-width="90"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="flex justify-between mono text-xs mb-2"><span>Python</span><span class="text-[var(--acid)]">80%</span></div>
+      <div class="h-1.5 rounded-full bg-[var(--panel2)] overflow-hidden"><div class="skill-bar-fill h-full bg-[var(--acid)]" data-width="80"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="flex justify-between mono text-xs mb-2"><span>SQL</span><span class="text-[var(--acid)]">78%</span></div>
+      <div class="h-1.5 rounded-full bg-[var(--panel2)] overflow-hidden"><div class="skill-bar-fill h-full bg-[var(--acid)]" data-width="78"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="flex justify-between mono text-xs mb-2"><span>JavaScript / HTML / CSS</span><span class="text-[var(--acid)]">70%</span></div>
+      <div class="h-1.5 rounded-full bg-[var(--panel2)] overflow-hidden"><div class="skill-bar-fill h-full bg-[var(--acid)]" data-width="70"></div></div>
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-6 mt-12">
+    <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-6 hover:border-[var(--acid)]/50 transition">
+      <h3 class="mono text-xs text-[var(--acid)] mb-4">DEVELOPER TOOLS</h3>
+      <div class="flex flex-wrap gap-2 mono text-xs">
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">VS Code</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">IntelliJ IDEA</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Eclipse</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">MySQL Workbench</span>
+      </div>
+    </div>
+    <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-6 hover:border-[var(--acid)]/50 transition">
+      <h3 class="mono text-xs text-[var(--acid)] mb-4">FRAMEWORKS &amp; TECH</h3>
+      <div class="flex flex-wrap gap-2 mono text-xs">
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">JDBC</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Git</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">GitHub</span>
+        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Figma</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certs" class="max-w-6xl mx-auto px-6 pb-28 reveal">
+  <p class="mono text-xs text-[var(--mute)] mb-2">04 / credentials</p>
+  <h2 class="text-3xl font-bold mb-10">Education &amp; certifications</h2>
+
+  <div class="space-y-3" id="cred-list">
+    <details class="group rounded-xl border border-[var(--line)] bg-[var(--panel)] hover:border-[var(--acid)]/40 transition" open>
+      <summary class="flex items-center justify-between p-5">
+        <div>
+          <h3 class="font-semibold">B.E. Electronics &amp; Telecommunication</h3>
+          <p class="text-sm text-[var(--mute)]">Smt. Kashibai Navale College of Engineering, Pune</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="mono text-xs text-[var(--mute)] hidden sm:block">Dec 2021 — June 2025</span>
+          <svg class="chev w-4 h-4 text-[var(--acid)] transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+      </summary>
+      <p class="px-5 pb-5 text-sm text-[var(--mute)] border-t border-[var(--line)] pt-4">Bachelor's degree covering core electronics, telecom systems, and programming fundamentals — the foundation for the move into software development.</p>
+    </details>
+
+    <details class="group rounded-xl border border-[var(--line)] bg-[var(--panel)] hover:border-[var(--acid)]/40 transition">
+      <summary class="flex items-center justify-between p-5">
+        <div>
+          <h3 class="font-semibold">Java Programming, basic to master</h3>
+          <p class="text-sm text-[var(--mute)]">Udemy — Instructor Abdul Bari</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <svg class="chev w-4 h-4 text-[var(--acid)] transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+      </summary>
+      <p class="px-5 pb-5 text-sm text-[var(--mute)] border-t border-[var(--line)] pt-4">Completed a full Java certification course spanning core syntax through advanced OOP concepts.</p>
+    </details>
+
+    <details class="group rounded-xl border border-[var(--line)] bg-[var(--panel)] hover:border-[var(--acid)]/40 transition">
+      <summary class="flex items-center justify-between p-5">
+        <div>
+          <h3 class="font-semibold">AZ-900: Microsoft Azure Fundamentals</h3>
+          <p class="text-sm text-[var(--mute)]">Instructor Amol Ahire, Pune</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="mono text-xs text-[var(--mute)] hidden sm:block">Dec 2023 — Feb 2024</span>
+          <svg class="chev w-4 h-4 text-[var(--acid)] transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+      </summary>
+      <p class="px-5 pb-5 text-sm text-[var(--mute)] border-t border-[var(--line)] pt-4">Foundational knowledge of cloud services and Microsoft Azure, including core services, cloud concepts, security, and pricing.</p>
+    </details>
+
+    <details class="group rounded-xl border border-[var(--line)] bg-[var(--panel)] hover:border-[var(--acid)]/40 transition">
+      <summary class="flex items-center justify-between p-5">
+        <div>
+          <h3 class="font-semibold">Cloud Computing &amp; Data Visualization Intern</h3>
+          <p class="text-sm text-[var(--mute)]">KasNet Technologies Pvt. Ltd, Pune</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="mono text-xs text-[var(--mute)] hidden sm:block">May — Aug 2020</span>
+          <svg class="chev w-4 h-4 text-[var(--acid)] transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+      </summary>
+      <p class="px-5 pb-5 text-sm text-[var(--mute)] border-t border-[var(--line)] pt-4">Hands-on internship in cloud technologies and Power BI, building skills in business intelligence and data-driven decision-making.</p>
+    </details>
+  </div>
+</section>
+
+<section id="contact" class="max-w-6xl mx-auto px-6 pb-32 reveal">
+  <div class="rounded-2xl border border-[var(--line)] bg-[var(--panel)] p-10 md:p-14 text-center glow relative overflow-hidden">
+    <div class="absolute inset-0 grid-bg opacity-30 pointer-events-none" style="mask-image:radial-gradient(ellipse 60% 80% at 50% 50%, black, transparent)"></div>
+    <p class="mono text-xs text-[var(--acid)] mb-3 relative">// EOF — let's talk</p>
+    <h2 class="text-3xl md:text-4xl font-bold mb-4 relative">Open to Java developer roles</h2>
+    <p class="text-[var(--mute)] max-w-md mx-auto mb-9 text-sm relative">
+      Pune-based, ready to relocate or work remote. Reach out for opportunities,
+      collaborations, or just to talk about RNNs and garage billing systems.
+    </p>
+    <div class="flex flex-wrap justify-center gap-3 relative">
+      <a href="mailto:vishal25adsule2003@gmail.com" class="magnetic inline-block mono text-sm px-6 py-3 bg-[var(--acid)] text-[#0a0e14] rounded font-semibold hover:opacity-90 transition" data-cursor>
+        vishal25adsule2003@gmail.com
+      </a>
+      <a href="tel:+919637209446" class="magnetic inline-block mono text-sm px-6 py-3 bg-[var(--panel2)] border border-[var(--line)] rounded hover:border-[var(--acid)] transition" data-cursor>
+        +91 96372 09446
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-[var(--line)] py-8 relative">
+  <p class="text-center mono text-xs text-[var(--mute)]">© 2026 Vishal Adsule — built with Java-grade discipline, Tailwind, and one too many late nights.</p>
+</footer>
+
+<script>
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', ()=>{
+    const h = document.documentElement;
+    const pct = (h.scrollTop)/(h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = pct + '%';
+  });
+
+  let lastY = window.scrollY;
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY;
+    if(y > lastY && y > 120){ navbar.style.transform = 'translateY(-100%)'; }
+    else { navbar.style.transform = 'translateY(0)'; }
+    lastY = y;
+  });
+
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuBtn.addEventListener('click', ()=>{
+    mobileMenu.classList.toggle('hidden');
+    mobileMenu.classList.toggle('flex');
+  });
+  document.querySelectorAll('.mobile-link').forEach(l=>l.addEventListener('click', ()=>{
+    mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('flex');
+  }));
+
+  const sections = ['about','projects','skills','certs','contact'].map(id=>document.getElementById(id));
+  const navlinks = document.querySelectorAll('.navlink');
+  const navObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navlinks.forEach(l=>l.classList.remove('active'));
+        const match = document.querySelector(`.navlink[href="#${e.target.id}"]`);
+        if(match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s=>s && navObserver.observe(s));
+
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(i=>io.observe(i));
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    document.querySelectorAll('.reveal-up').forEach((el,i)=>{
+      el.style.transform = 'translateY(110%)';
+      el.style.transition = `transform .8s cubic-bezier(.16,1,.3,1) ${i*0.12+0.1}s`;
+      requestAnimationFrame(()=> requestAnimationFrame(()=>{ el.style.transform='translateY(0)'; }));
+    });
+    document.getElementById('hero-eyebrow').style.transition='opacity .6s ease .5s';
+    requestAnimationFrame(()=> requestAnimationFrame(()=>{ document.getElementById('hero-eyebrow').style.opacity=1; }));
+  });
+
+  const skillSection = document.getElementById('skill-bars');
+  const skillObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        document.querySelectorAll('.skill-bar-fill').forEach(bar=>{
+          bar.style.width = bar.dataset.width + '%';
+        });
+        skillObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  if(skillSection) skillObserver.observe(skillSection);
+
+  const counters = document.querySelectorAll('.counter');
+  const counterObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el = e.target;
+        const target = +el.dataset.target;
+        const dur = 1200;
+        const start = performance.now();
+        function tick(now){
+          const p = Math.min((now-start)/dur, 1);
+          el.textContent = Math.floor(p*target);
+          if(p<1) requestAnimationFrame(tick); else el.textContent = target;
+        }
+        requestAnimationFrame(tick);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c=>counterObserver.observe(c));
+
+  document.querySelectorAll('.tilt-card').forEach(card=>{
+    card.addEventListener('mousemove', (e)=>{
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left)/r.width - 0.5;
+      const y = (e.clientY - r.top)/r.height - 0.5;
+      card.style.transform = `perspective(800px) rotateY(${x*4}deg) rotateX(${-y*4}deg) translateY(-2px)`;
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform = 'perspective(800px) rotateY(0) rotateX(0)'; });
+  });
+
+  document.querySelectorAll('.magnetic').forEach(btn=>{
+    btn.addEventListener('mousemove', (e)=>{
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width/2;
+      const y = e.clientY - r.top - r.height/2;
+      btn.style.transform = `translate(${x*0.18}px, ${y*0.3}px)`;
+    });
+    btn.addEventListener('mouseleave', ()=>{ btn.style.transform = 'translate(0,0)'; });
+  });
+
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if(window.matchMedia('(min-width:769px)').matches){
+    let rx=0, ry=0, mx=0, my=0;
+    window.addEventListener('mousemove', (e)=>{
+      dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px';
+      mx = e.clientX; my = e.clientY;
+    });
+    function ringLoop(){
+      rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+      ring.style.left = rx+'px'; ring.style.top = ry+'px';
+      requestAnimationFrame(ringLoop);
+    }
+    ringLoop();
+    document.querySelectorAll('[data-cursor]').forEach(el=>{
+      el.addEventListener('mouseenter', ()=> document.body.classList.add('cursor-grow'));
+      el.addEventListener('mouseleave', ()=> document.body.classList.remove('cursor-grow'));
+    });
+    document.querySelectorAll('[data-cursor-grow]').forEach(el=>{
+      el.addEventListener('mouseenter', ()=> document.body.classList.add('cursor-grow'));
+      el.addEventListener('mouseleave', ()=> document.body.classList.remove('cursor-grow'));
+    });
+  }
+
+  function copyEmail(btn){
+    navigator.clipboard.writeText('vishal25adsule2003@gmail.com');
+    const wrap = btn.closest('.copy-wrap');
+    wrap.classList.add('show-tip');
+    setTimeout(()=> wrap.classList.remove('show-tip'), 1500);
+  }
+</script>
+</body>
+</html>
