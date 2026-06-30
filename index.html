@@ -1,540 +1,762 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vishal Adsule — Java Developer</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.4.1/tailwind.min.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vishal Adsule | Java Developer Portfolio</title>
+<meta name="description" content="Vishal Adsule — Java Developer skilled in Java, Python, SQL, and JDBC. Explore projects, certifications, and experience in software development." />
+<meta name="keywords" content="Vishal Adsule, Java Developer, Software Engineer Portfolio, JDBC, Python, SQL" />
+<meta name="author" content="Vishal Adsule" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="Vishal Adsule | Java Developer Portfolio" />
+<meta property="og:description" content="Java Developer skilled in Java, Python, SQL and JDBC. Explore my projects and experience." />
+<meta property="og:type" content="website" />
+
+<!-- Favicon (simple inline SVG) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233B82F6'/%3E%3Cstop offset='1' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect rx='20' width='100' height='100' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-size='52' fill='white' text-anchor='middle' font-family='Arial' font-weight='bold'%3EV%3C/text%3E%3C/svg%3E" />
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#0a0e14;
-    --panel:#10151d;
-    --panel2:#161d28;
-    --line:#212a37;
-    --mute:#8a93a3;
-    --paper:#e7ebf1;
-    --acid:#7CF29C;
-    --acid-dim:#7CF29C33;
-    --amber:#F2A65C;
-  }
-  *{ scroll-behavior:smooth; }
-  body{ background:var(--ink); color:var(--paper); font-family:'Space Grotesk',sans-serif; cursor:none; }
-  @media (max-width:768px){ body{ cursor:auto; } }
-  .mono{ font-family:'JetBrains Mono',monospace; }
-  ::selection{ background:var(--acid); color:#0a0e14; }
-  ::-webkit-scrollbar{ width:8px; }
-  ::-webkit-scrollbar-track{ background:var(--ink); }
-  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:4px; }
-  ::-webkit-scrollbar-thumb:hover{ background:var(--acid); }
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  #cursor-dot, #cursor-ring{ position:fixed; top:0; left:0; pointer-events:none; z-index:9999; border-radius:50%; transform:translate(-50%,-50%); }
-  #cursor-dot{ width:6px; height:6px; background:var(--acid); transition:opacity .2s; }
-  #cursor-ring{ width:32px; height:32px; border:1px solid var(--acid); transition:width .2s,height .2s,border-color .2s,opacity .2s; opacity:.6; }
-  .cursor-grow #cursor-ring{ width:56px; height:56px; background:var(--acid-dim); border-color:transparent; }
-  @media (max-width:768px){ #cursor-dot,#cursor-ring{ display:none; } }
+<!-- Tailwind CSS (CDN) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#3B82F6',
+          secondary: '#8B5CF6',
+          accent: '#06B6D4',
+          bgdark: '#0F172A',
+          card: '#1E293B',
+          txt: '#F8FAFC',
+        },
+        fontFamily: {
+          heading: ['Poppins', 'sans-serif'],
+          body: ['Inter', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
 
-  #progress{ position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--acid),var(--amber)); z-index:60; width:0%; transition:width .1s linear; }
-
-  .glow{ box-shadow:0 0 0 1px var(--line), 0 30px 80px -30px rgba(124,242,156,0.18); }
-  .dot-pulse{ box-shadow:0 0 0 0 rgba(124,242,156,.6); animation:pulse 2s infinite; }
-  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(124,242,156,.5)} 70%{box-shadow:0 0 0 10px rgba(124,242,156,0)} 100%{box-shadow:0 0 0 0 rgba(124,242,156,0)} }
-
-  .typewriter{ overflow:hidden; white-space:nowrap; border-right:2px solid var(--acid); animation: typing 2.6s steps(28,end), blink .8s step-end infinite alternate; }
-  @keyframes typing{ from{width:0} to{width:28ch} }
-  @keyframes blink{ 50%{ border-color:transparent } }
-
-  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
-  .reveal.in{ opacity:1; transform:translateY(0); }
-  .reveal-stagger > *{ opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
-  .reveal-stagger.in > *{ opacity:1; transform:translateY(0); }
-  .reveal-stagger.in > *:nth-child(1){ transition-delay:.05s; }
-  .reveal-stagger.in > *:nth-child(2){ transition-delay:.15s; }
-  .reveal-stagger.in > *:nth-child(3){ transition-delay:.25s; }
-  .reveal-stagger.in > *:nth-child(4){ transition-delay:.35s; }
-
-  .navlink{ position:relative; }
-  .navlink::after{ content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:var(--acid); transition:width .25s ease; }
-  .navlink.active::after, .navlink:hover::after{ width:100%; }
-  .navlink.active{ color:var(--acid); }
-
-  .tilt-card{ transform-style:preserve-3d; transition:transform .15s ease, border-color .25s ease; }
-
-  .skill-bar-fill{ width:0%; transition:width 1.2s cubic-bezier(.16,1,.3,1); }
-
-  .magnetic{ transition:transform .2s ease; }
-
-  .side-line{ width:1px; height:80px; background:var(--line); }
-
-  .blink-cursor{ animation:blink .8s step-end infinite alternate; }
-
-  .grid-bg{
-    background-image: linear-gradient(rgba(124,242,156,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,242,156,0.04) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
-
-  .copy-tooltip{ opacity:0; pointer-events:none; transition:opacity .2s ease; }
-  .copy-wrap:hover .copy-tooltip, .copy-wrap.show-tip .copy-tooltip{ opacity:1; }
-
-  details > summary{ list-style:none; cursor:pointer; }
-  details > summary::-webkit-details-marker{ display:none; }
-  details[open] .chev{ transform:rotate(90deg); }
-</style>
+<!-- Custom Styles -->
+<link rel="stylesheet" href="css/custom.css" />
 </head>
-<body class="antialiased">
 
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
-<div id="progress"></div>
+<body class="font-body bg-bgdark text-txt antialiased">
 
-<div class="fixed inset-0 grid-bg pointer-events-none" style="mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 10%, transparent 70%)"></div>
+<!-- Scroll Progress Bar -->
+<div id="scroll-progress"></div>
 
-<div class="hidden lg:flex flex-col items-center gap-5 fixed left-8 bottom-0 z-40">
-  <a href="https://github.com/VishalAdsule" target="_blank" class="magnetic text-[var(--mute)] hover:text-[var(--acid)] hover:-translate-y-1 transition" data-cursor>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.68.08-.68 1.14.08 1.74 1.17 1.74 1.17 1.01 1.74 2.65 1.24 3.3.95.1-.73.4-1.24.72-1.53-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.03 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.58.23 2.74.11 3.03.73.79 1.17 1.8 1.17 3.04 0 4.35-2.66 5.31-5.19 5.59.41.35.77 1.04.77 2.11 0 1.52-.01 2.75-.01 3.13 0 .3.21.66.79.55A11.03 11.03 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
-  </a>
-  <a href="https://linkedin.com/in/vishaladsule/" target="_blank" class="magnetic text-[var(--mute)] hover:text-[var(--acid)] hover:-translate-y-1 transition" data-cursor>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.15 1.45-2.15 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.27 2.38 4.27 5.47v6.27zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
-  </a>
-  <a href="mailto:vishal25adsule2003@gmail.com" class="magnetic text-[var(--mute)] hover:text-[var(--acid)] hover:-translate-y-1 transition" data-cursor>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-  </a>
-  <div class="side-line"></div>
-</div>
-<div class="hidden lg:flex flex-col items-center gap-4 fixed right-8 bottom-0 z-40">
-  <a href="mailto:vishal25adsule2003@gmail.com" class="mono text-xs text-[var(--mute)] hover:text-[var(--acid)] transition" style="writing-mode:vertical-rl;" data-cursor>vishal25adsule2003@gmail.com</a>
-  <div class="side-line"></div>
-</div>
-
-<nav id="navbar" class="fixed top-0 inset-x-0 z-50 backdrop-blur bg-[#0a0e14]/80 border-b border-[var(--line)] transition-transform duration-300">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="#top" class="mono text-sm text-[var(--acid)] flex items-center gap-2" data-cursor>
-      <span class="w-2 h-2 rounded-full bg-[var(--acid)] dot-pulse"></span>
-      ~/vishal-adsule
+<!-- ============================== NAVBAR ============================== -->
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between h-20">
+    <a href="#home" class="font-heading font-bold text-xl tracking-tight">
+      <span class="gradient-text">VA</span><span class="text-txt">.dev</span>
     </a>
-    <div class="hidden md:flex gap-8 mono text-xs text-[var(--mute)]">
-      <a href="#about" class="navlink" data-cursor>01.about</a>
-      <a href="#projects" class="navlink" data-cursor>02.projects</a>
-      <a href="#skills" class="navlink" data-cursor>03.skills</a>
-      <a href="#certs" class="navlink" data-cursor>04.credentials</a>
-      <a href="#contact" class="navlink" data-cursor>05.contact</a>
+
+    <div class="hidden md:flex items-center gap-10">
+      <a href="#home" class="nav-link text-sm font-medium">Home</a>
+      <a href="#about" class="nav-link text-sm font-medium">About</a>
+      <a href="#education" class="nav-link text-sm font-medium">Education</a>
+      <a href="#skills" class="nav-link text-sm font-medium">Skills</a>
+      <a href="#projects" class="nav-link text-sm font-medium">Projects</a>
+      <a href="#internship" class="nav-link text-sm font-medium">Internship</a>
+      <a href="#certifications" class="nav-link text-sm font-medium">Certs</a>
+      <a href="#contact" class="nav-link text-sm font-medium">Contact</a>
     </div>
-    <div class="flex items-center gap-3">
-      <a href="#contact" class="magnetic mono text-xs px-3 py-1.5 border border-[var(--acid)] text-[var(--acid)] rounded hover:bg-[var(--acid)] hover:text-[#0a0e14] transition" data-cursor>say hi</a>
-      <button id="menu-btn" class="md:hidden text-[var(--paper)]">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
-    </div>
+
+    <a href="#contact" class="hidden md:inline-flex btn-primary text-sm font-semibold px-5 py-2.5 rounded-full">
+      Let's Talk
+    </a>
+
+    <button id="menu-btn" aria-label="Toggle menu" aria-expanded="false" class="md:hidden text-txt">
+      <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+    </button>
   </div>
-  <div id="mobile-menu" class="hidden md:hidden flex-col gap-4 px-6 pb-5 mono text-sm text-[var(--mute)]">
-    <a href="#about" class="mobile-link">01. about</a>
-    <a href="#projects" class="mobile-link">02. projects</a>
-    <a href="#skills" class="mobile-link">03. skills</a>
-    <a href="#certs" class="mobile-link">04. credentials</a>
-    <a href="#contact" class="mobile-link">05. contact</a>
+
+  <div id="mobile-menu" class="hidden md:hidden glass mx-4 mb-3 rounded-2xl px-6 py-5 flex flex-col gap-4">
+    <a href="#home" class="nav-link text-sm font-medium">Home</a>
+    <a href="#about" class="nav-link text-sm font-medium">About</a>
+    <a href="#education" class="nav-link text-sm font-medium">Education</a>
+    <a href="#skills" class="nav-link text-sm font-medium">Skills</a>
+    <a href="#projects" class="nav-link text-sm font-medium">Projects</a>
+    <a href="#internship" class="nav-link text-sm font-medium">Internship</a>
+    <a href="#certifications" class="nav-link text-sm font-medium">Certs</a>
+    <a href="#contact" class="nav-link text-sm font-medium">Contact</a>
   </div>
 </nav>
 
-<header id="top" class="max-w-6xl mx-auto px-6 pt-40 pb-28 relative">
-  <p class="mono text-xs text-[var(--mute)] mb-4 opacity-0" id="hero-eyebrow">// resume.compile(success)</p>
-  <h1 class="text-5xl md:text-7xl font-bold leading-tight" id="hero-name">
-    <span class="inline-block overflow-hidden"><span class="block reveal-up">Vishal</span></span>
-    <span class="inline-block overflow-hidden"><span class="block reveal-up text-[var(--mute)]">Adsule.</span></span>
-  </h1>
-  <p class="mono text-lg md:text-xl text-[var(--acid)] mt-5 typewriter">Java Developer in training</p>
+<main>
 
-  <p class="text-[var(--mute)] mt-8 max-w-2xl text-base leading-relaxed reveal" id="hero-bio">
-    Electronics &amp; Telecommunication graduate from Pune who taught himself Java the
-    way most people learn a language abroad — immersion, mistakes, and a lot of late
-    builds. Comfortable across the stack from JDBC-backed billing systems to LSTM
-    models predicting stock prices.
-  </p>
+<!-- ============================== HERO ============================== -->
+<section id="home" class="relative min-h-screen flex items-center gradient-bg-animated overflow-hidden pt-20">
+  <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.15),transparent_45%),radial-gradient(circle_at_80%_70%,rgba(139,92,246,0.15),transparent_45%)]"></div>
 
-  <div class="flex flex-wrap gap-3 mt-9 reveal" id="hero-actions">
-    <a href="#projects" class="magnetic mono text-xs px-5 py-3 bg-[var(--acid)] text-[#0a0e14] rounded font-semibold hover:opacity-90 transition" data-cursor>view projects ↓</a>
-    <div class="copy-wrap relative">
-      <button onclick="copyEmail(this)" class="magnetic mono text-xs px-5 py-3 bg-[var(--panel)] border border-[var(--line)] rounded hover:border-[var(--acid)] transition" data-cursor>
-        copy email
-      </button>
-      <span class="copy-tooltip absolute -top-8 left-1/2 -translate-x-1/2 mono text-[10px] bg-[var(--acid)] text-[#0a0e14] px-2 py-1 rounded whitespace-nowrap">copied ✓</span>
-    </div>
-    <a href="tel:+919637209446" class="magnetic mono text-xs px-5 py-3 bg-[var(--panel)] border border-[var(--line)] rounded hover:border-[var(--acid)] transition" data-cursor>+91 96372 09446</a>
-  </div>
-</header>
-
-<section class="max-w-6xl mx-auto px-6 pb-20 reveal-stagger grid grid-cols-2 md:grid-cols-4 gap-6" id="stats">
-  <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-5 text-center hover:border-[var(--acid)]/50 transition">
-    <p class="text-3xl md:text-4xl font-bold text-[var(--acid)] mono"><span class="counter" data-target="2">0</span>+</p>
-    <p class="mono text-xs text-[var(--mute)] mt-1">major projects</p>
-  </div>
-  <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-5 text-center hover:border-[var(--acid)]/50 transition">
-    <p class="text-3xl md:text-4xl font-bold text-[var(--acid)] mono"><span class="counter" data-target="5">0</span></p>
-    <p class="mono text-xs text-[var(--mute)] mt-1">languages known</p>
-  </div>
-  <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-5 text-center hover:border-[var(--acid)]/50 transition">
-    <p class="text-3xl md:text-4xl font-bold text-[var(--acid)] mono"><span class="counter" data-target="2">0</span></p>
-    <p class="mono text-xs text-[var(--mute)] mt-1">certifications</p>
-  </div>
-  <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-5 text-center hover:border-[var(--acid)]/50 transition">
-    <p class="text-3xl md:text-4xl font-bold text-[var(--acid)] mono"><span class="counter" data-target="2025">0</span></p>
-    <p class="mono text-xs text-[var(--mute)] mt-1">graduate year</p>
-  </div>
-</section>
-
-<section id="about" class="max-w-6xl mx-auto px-6 pb-28 reveal">
-  <p class="mono text-xs text-[var(--mute)] mb-2">01 / about</p>
-  <h2 class="text-3xl font-bold mb-8">Who's compiling this page</h2>
-
-  <div class="rounded-xl overflow-hidden glow border border-[var(--line)] tilt-card" id="terminal-card">
-    <div class="bg-[var(--panel2)] px-4 py-3 flex items-center gap-2 border-b border-[var(--line)]">
-      <span class="w-3 h-3 rounded-full bg-[#F2705C]"></span>
-      <span class="w-3 h-3 rounded-full bg-[var(--amber)]"></span>
-      <span class="w-3 h-3 rounded-full bg-[var(--acid)] dot-pulse"></span>
-      <span class="mono text-xs text-[var(--mute)] ml-3">profile.java</span>
-      <span class="mono text-[10px] text-[var(--mute)] ml-auto hidden sm:block">read-only</span>
-    </div>
-    <div class="bg-[var(--panel)] p-6 md:p-8 mono text-sm leading-7 text-[var(--mute)] overflow-x-auto">
-<span class="text-[var(--amber)]">public class</span> <span class="text-[var(--acid)]">VishalAdsule</span> {
-
-  <span class="text-[var(--amber)]">private</span> String education = <span class="text-[var(--paper)]">"B.E. Electronics &amp; Telecommunication, SKNCOE Pune (2025)"</span>;
-  <span class="text-[var(--amber)]">private</span> String[] languages = { <span class="text-[var(--paper)]">"Java"</span>, <span class="text-[var(--paper)]">"Python"</span>, <span class="text-[var(--paper)]">"SQL"</span>, <span class="text-[var(--paper)]">"JavaScript"</span> };
-  <span class="text-[var(--amber)]">private</span> String focus = <span class="text-[var(--paper)]">"backend systems, data pipelines, clean schemas"</span>;
-  <span class="text-[var(--amber)]">private</span> String offDuty = <span class="text-[var(--paper)]">"Battle Royale, adventure, movies"</span>;
-
-  <span class="text-[var(--amber)]">public void</span> <span class="text-[var(--acid)]">build</span>() {
-    System.out.println(<span class="text-[var(--paper)]">"shipped a garage billing system in two weeks"</span>);
-  }
-}<span class="blink-cursor">▌</span>
-    </div>
-  </div>
-</section>
-
-<section id="projects" class="max-w-6xl mx-auto px-6 pb-28 reveal">
-  <p class="mono text-xs text-[var(--mute)] mb-2">02 / projects</p>
-  <h2 class="text-3xl font-bold mb-10">Things I've built</h2>
-
-  <div class="grid md:grid-cols-2 gap-6 reveal-stagger" id="project-grid">
-    <article class="tilt-card rounded-xl border border-[var(--line)] bg-[var(--panel)] p-6 hover:border-[var(--acid)]/60 transition relative overflow-hidden group" data-cursor-grow>
-      <div class="absolute -right-10 -top-10 w-32 h-32 bg-[var(--acid)] opacity-0 group-hover:opacity-10 rounded-full blur-2xl transition"></div>
-      <div class="flex items-start justify-between mb-3">
-        <p class="mono text-xs text-[var(--acid)]">June 2025</p>
-        <span class="mono text-[10px] px-2 py-0.5 rounded-full border border-[var(--line)] text-[var(--mute)]">solo build</span>
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10 w-full grid lg:grid-cols-5 gap-12 items-center">
+    <div class="lg:col-span-3">
+      <p class="section-eyebrow text-accent font-semibold text-sm mb-4 uppercase">Hello, I'm</p>
+      <h1 class="font-heading font-extrabold text-5xl sm:text-6xl lg:text-7xl leading-tight mb-4">
+        Vishal <span class="gradient-text">Adsule</span>
+      </h1>
+      <div class="h-10 sm:h-12 mb-6">
+        <span class="font-heading text-xl sm:text-2xl text-slate-300">I'm a </span>
+        <span id="typing-text" class="font-heading text-xl sm:text-2xl font-semibold text-accent"></span><span class="typing-cursor h-6">&nbsp;</span>
       </div>
-      <h3 class="text-xl font-semibold mb-2">Garage Billing System</h3>
-      <p class="text-[var(--mute)] text-sm leading-relaxed mb-4">
-        An automated billing application for a garage — real-time invoicing,
-        payment processing, and job tracking, with a centralized database for
-        customer, vehicle, and service history.
+      <p class="text-slate-400 text-base sm:text-lg max-w-xl mb-10 leading-relaxed">
+        Final-year Electronics &amp; Telecommunication graduate with a strong foundation in Java, Python and SQL.
+        I build practical, data-driven applications — from billing systems to ML-powered market predictors —
+        and I'm Azure Fundamentals certified with a growing focus on backend and cloud-ready development.
       </p>
-      <ul class="text-sm text-[var(--mute)] space-y-1.5 mb-5">
-        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Real-time job tracking and inventory management</li>
-        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Centralized records for customers and vehicles</li>
-        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Full service history per vehicle</li>
-      </ul>
-      <div class="flex flex-wrap gap-2 mono text-xs">
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Java</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">JDBC</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">IntelliJ IDEA</span>
+      <div class="flex flex-wrap gap-4">
+        <a href="assets/resume/Vishal_Adsule_Resume.pdf" download class="btn-primary text-sm font-semibold px-7 py-3.5 rounded-full inline-flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" /></svg>
+          Download Resume
+        </a>
+        <a href="#projects" class="btn-outline text-sm font-semibold px-7 py-3.5 rounded-full glass">View Projects</a>
+        <a href="#contact" class="btn-outline text-sm font-semibold px-7 py-3.5 rounded-full glass">Contact Me</a>
       </div>
-    </article>
 
-    <article class="tilt-card rounded-xl border border-[var(--line)] bg-[var(--panel)] p-6 hover:border-[var(--acid)]/60 transition relative overflow-hidden group" data-cursor-grow>
-      <div class="absolute -right-10 -top-10 w-32 h-32 bg-[var(--amber)] opacity-0 group-hover:opacity-10 rounded-full blur-2xl transition"></div>
-      <div class="flex items-start justify-between mb-3">
-        <p class="mono text-xs text-[var(--acid)]">September 2024</p>
-        <span class="mono text-[10px] px-2 py-0.5 rounded-full border border-[var(--line)] text-[var(--mute)]">ML / data</span>
+      <div class="flex items-center gap-5 mt-10">
+        <a href="https://github.com/VishalAdsule" target="_blank" rel="noopener" aria-label="GitHub" class="text-slate-400 hover:text-accent transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/vishaladsule/" target="_blank" rel="noopener" aria-label="LinkedIn" class="text-slate-400 hover:text-accent transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.368-1.85 3.598 0 4.268 2.368 4.268 5.452v6.289zM5.337 7.433a2.062 2.062 0 11-.001-4.123 2.062 2.062 0 01.001 4.123zM7.119 20.452H3.554V9h3.565v11.452z"/></svg>
+        </a>
+        <a href="mailto:vishal25adsule2003@gmail.com" aria-label="Email" class="text-slate-400 hover:text-accent transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+        </a>
       </div>
-      <h3 class="text-xl font-semibold mb-2">Stock Market Prediction Using ML</h3>
-      <p class="text-[var(--mute)] text-sm leading-relaxed mb-4">
-        A deep learning model for real-time stock forecasting using RNN and
-        LSTM networks, fed by an automated data pipeline pulling live data
-        from an API.
+    </div>
+
+    <div class="lg:col-span-2 flex justify-center">
+      <div class="relative">
+        <div class="absolute -inset-4 rounded-full bg-gradient-to-tr from-primary via-secondary to-accent opacity-30 blur-2xl"></div>
+        <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full glass-card flex items-center justify-center overflow-hidden">
+          <span class="font-heading font-extrabold text-7xl gradient-text">VA</span>
+        </div>
+        <div class="absolute -bottom-4 -right-4 glass px-4 py-2.5 rounded-2xl text-xs font-semibold">
+          <span class="text-accent">●</span> Open to Opportunities
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#about" aria-label="Scroll to About section" class="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 text-slate-400 hover:text-accent transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+  </a>
+</section>
+
+<!-- ============================== ABOUT ============================== -->
+<section id="about" class="py-28 px-6 lg:px-10">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-eyebrow text-accent font-semibold text-sm mb-3 uppercase">About Me</p>
+      <h2 class="font-heading font-bold text-4xl sm:text-5xl">Turning ideas into <span class="gradient-text">working software</span></h2>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-12 items-start">
+      <div class="lg:col-span-3 reveal-left">
+        <p class="text-slate-300 leading-relaxed mb-5">
+          I'm Vishal Adsule, a Bachelor of Electronics and Telecommunication graduate from Smt. Kashibai Navale
+          College of Engineering, Pune, with a developer's mindset and a deep interest in Java-based application
+          development. My background blends core electronics fundamentals with hands-on software engineering,
+          giving me a practical, systems-level understanding of the projects I build.
+        </p>
+        <p class="text-slate-300 leading-relaxed mb-5">
+          I completed an internship at KasNet Technologies Pvt. Ltd, where I worked with Azure cloud fundamentals
+          and Power BI, building a foundation in cloud computing and data-driven decision-making. Since then, I've
+          gone on to build complete, real-world applications — including a Java-based garage billing system with
+          JDBC and a machine learning model for stock market prediction using RNN and LSTM networks.
+        </p>
+        <p class="text-slate-300 leading-relaxed">
+          I'm AZ-900: Microsoft Azure Fundamentals certified and have completed an in-depth Java certification
+          course, giving me a solid grasp of the language from fundamentals to advanced concepts. I enjoy turning
+          ambiguous problems into clean, working systems — and I'm currently looking for opportunities to grow as
+          a Java developer.
+        </p>
+
+        <div class="flex flex-wrap gap-3 mt-8">
+          <span class="glass px-4 py-2 rounded-full text-xs font-medium text-slate-300">Vadgaon, Pune, Maharashtra</span>
+          <span class="glass px-4 py-2 rounded-full text-xs font-medium text-slate-300">B.E. Electronics &amp; Telecommunication</span>
+          <span class="glass px-4 py-2 rounded-full text-xs font-medium text-slate-300">Azure Fundamentals Certified</span>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2 grid grid-cols-2 gap-5 reveal-right">
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <p class="font-heading font-extrabold text-4xl gradient-text"><span class="counter" data-target="2">0</span>+</p>
+          <p class="text-slate-400 text-sm mt-2">Projects Built</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <p class="font-heading font-extrabold text-4xl gradient-text"><span class="counter" data-target="2">0</span></p>
+          <p class="text-slate-400 text-sm mt-2">Certifications</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <p class="font-heading font-extrabold text-4xl gradient-text"><span class="counter" data-target="1">0</span></p>
+          <p class="text-slate-400 text-sm mt-2">Internship</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <p class="font-heading font-extrabold text-4xl gradient-text"><span class="counter" data-target="9">0</span>+</p>
+          <p class="text-slate-400 text-sm mt-2">Skills &amp; Tools</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== EDUCATION ============================== -->
+<section id="education" class="py-28 px-6 lg:px-10 bg-card/30">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-eyebrow text-accent font-semibold text-sm mb-3 uppercase">Education</p>
+      <h2 class="font-heading font-bold text-4xl sm:text-5xl">Academic <span class="gradient-text">Journey</span></h2>
+    </div>
+
+    <div class="relative pl-10">
+      <div class="timeline-line absolute left-2 top-2 bottom-2 w-0.5"></div>
+
+      <!-- Item 1 -->
+      <div class="relative mb-14 reveal-left">
+        <span class="timeline-dot absolute -left-9 top-1.5 w-4 h-4 rounded-full bg-primary"></span>
+        <div class="glass-card rounded-2xl p-7">
+          <p class="text-accent text-xs font-semibold uppercase tracking-wide mb-2">Dec 2021 – June 2025</p>
+          <h3 class="font-heading font-bold text-xl mb-1">Bachelor of Electronics and Telecommunication</h3>
+          <p class="text-slate-300 mb-1">Smt. Kashibai Navale College of Engineering</p>
+          <p class="text-slate-500 text-sm">Vadgaon-Pune, Maharashtra</p>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="relative mb-14 reveal-left delay-1">
+        <span class="timeline-dot absolute -left-9 top-1.5 w-4 h-4 rounded-full bg-secondary"></span>
+        <div class="glass-card rounded-2xl p-7">
+          <p class="text-accent text-xs font-semibold uppercase tracking-wide mb-2">July 2019 – May 2021</p>
+          <h3 class="font-heading font-bold text-xl mb-1">Secondary and Higher Secondary Education</h3>
+          <p class="text-slate-300 mb-1">Shri. Tripura Junior Science College</p>
+          <p class="text-slate-500 text-sm">Latur, Maharashtra</p>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="relative reveal-left delay-2">
+        <span class="timeline-dot absolute -left-9 top-1.5 w-4 h-4 rounded-full bg-accent"></span>
+        <div class="glass-card rounded-2xl p-7">
+          <p class="text-accent text-xs font-semibold uppercase tracking-wide mb-2">June 2011 – April 2019</p>
+          <h3 class="font-heading font-bold text-xl mb-1">Secondary Schooling</h3>
+          <p class="text-slate-300 mb-1">Parimal High School — Maharashtra State Board</p>
+          <p class="text-slate-500 text-sm">Latur, Maharashtra</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== SKILLS ============================== -->
+<section id="skills" class="py-28 px-6 lg:px-10">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-eyebrow text-accent font-semibold text-sm mb-3 uppercase">Technical Skills</p>
+      <h2 class="font-heading font-bold text-4xl sm:text-5xl">Tools of the <span class="gradient-text">Trade</span></h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+
+      <!-- Programming Languages -->
+      <div class="glass-card card-glow rounded-2xl p-7 reveal-scale">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 8l-4 4 4 4" /></svg>
+          </div>
+          <h3 class="font-heading font-semibold text-lg">Programming Languages</h3>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>Java</span><span class="text-slate-400">90%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="90"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>Python</span><span class="text-slate-400">80%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="80"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>SQL</span><span class="text-slate-400">80%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="80"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>JavaScript</span><span class="text-slate-400">65%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="65"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Web Technologies -->
+      <div class="glass-card card-glow rounded-2xl p-7 reveal-scale delay-1">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 010 18 15 15 0 010-18z" /></svg>
+          </div>
+          <h3 class="font-heading font-semibold text-lg">Web Technologies</h3>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>HTML / CSS</span><span class="text-slate-400">75%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="75"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>JDBC</span><span class="text-slate-400">75%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="75"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Databases -->
+      <div class="glass-card card-glow rounded-2xl p-7 reveal-scale delay-2">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-accent to-primary flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7c0-1.66 3.58-3 8-3s8 1.34 8 3-3.58 3-8 3-8-1.34-8-3zm0 0v10c0 1.66 3.58 3 8 3s8-1.34 8-3V7M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" /></svg>
+          </div>
+          <h3 class="font-heading font-semibold text-lg">Databases</h3>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>MySQL Workbench</span><span class="text-slate-400">80%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="80"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>SQL Querying</span><span class="text-slate-400">78%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="78"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Developer Tools -->
+      <div class="glass-card card-glow rounded-2xl p-7 reveal-scale">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a1 1 0 01-1-1V9a1 1 0 011-1h1a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1V4z" /></svg>
+          </div>
+          <h3 class="font-heading font-semibold text-lg">Developer Tools</h3>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>IntelliJ IDEA</span><span class="text-slate-400">85%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="85"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>VS Code</span><span class="text-slate-400">85%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="85"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>Eclipse</span><span class="text-slate-400">65%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="65"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Version Control -->
+      <div class="glass-card card-glow rounded-2xl p-7 reveal-scale delay-1">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6M6 9a2 2 0 11-4 0 2 2 0 014 0zm0 0v6m12-6a2 2 0 11-4 0 2 2 0 014 0zm0 0v6m-6 4a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+          </div>
+          <h3 class="font-heading font-semibold text-lg">Version Control</h3>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>Git</span><span class="text-slate-400">80%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="80"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>GitHub</span><span class="text-slate-400">80%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="80"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Soft Skills -->
+      <div class="glass-card card-glow rounded-2xl p-7 reveal-scale delay-2">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-accent to-primary flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z" /></svg>
+          </div>
+          <h3 class="font-heading font-semibold text-lg">Soft Skills</h3>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>Teamwork</span><span class="text-slate-400">90%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="90"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5"><span>Problem Solving</span><span class="text-slate-400">85%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-level="85"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================== PROJECTS ============================== -->
+<section id="projects" class="py-28 px-6 lg:px-10 bg-card/30">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-eyebrow text-accent font-semibold text-sm mb-3 uppercase">Projects</p>
+      <h2 class="font-heading font-bold text-4xl sm:text-5xl">Things I've <span class="gradient-text">Built</span></h2>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+
+      <!-- Project 1: Garage Billing System -->
+      <div class="glass-card rounded-2xl overflow-hidden reveal-left">
+        <div class="h-48 bg-gradient-to-br from-primary/30 via-secondary/20 to-accent/20 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-slate-300/60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m-6 4h6m-6 4h3M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" /></svg>
+        </div>
+        <div class="p-7">
+          <p class="text-accent text-xs font-semibold uppercase tracking-wide mb-2">June 2025</p>
+          <h3 class="font-heading font-bold text-xl mb-3">Garage Billing System</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            An automated billing system that streamlines real-time invoicing and payment processing for a garage,
+            with centralized records to manage customers, vehicles, and service history.
+          </p>
+          <ul class="text-slate-400 text-sm space-y-1.5 mb-5 list-disc list-inside">
+            <li>Real-time job tracking and inventory management</li>
+            <li>Centralized database for customer &amp; vehicle service records</li>
+            <li>Complete digital service history per vehicle</li>
+          </ul>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="glass px-3 py-1 rounded-full text-xs font-medium">Java</span>
+            <span class="glass px-3 py-1 rounded-full text-xs font-medium">JDBC</span>
+            <span class="glass px-3 py-1 rounded-full text-xs font-medium">IntelliJ IDEA</span>
+            <span class="glass px-3 py-1 rounded-full text-xs font-medium">MySQL</span>
+          </div>
+
+          <div class="flex flex-wrap gap-3 mb-5">
+            <a href="https://github.com/VishalAdsule" target="_blank" rel="noopener" class="btn-outline glass px-5 py-2.5 rounded-full text-xs font-semibold inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+            <button type="button" class="project-details-toggle btn-outline glass px-5 py-2.5 rounded-full text-xs font-semibold inline-flex items-center gap-2" data-target="details-1">
+              <span class="toggle-label">View Details</span>
+              <svg class="toggle-icon h-3.5 w-3.5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+          </div>
+
+          <div id="details-1" class="hidden border-t border-white/10 pt-5 text-sm text-slate-400 space-y-3">
+            <p><span class="text-slate-200 font-semibold">Problem:</span> Garage owners were tracking invoices, inventory, and vehicle history manually, leading to billing errors and lost records.</p>
+            <p><span class="text-slate-200 font-semibold">Solution:</span> A Java + JDBC desktop application connected to a centralized database, automating invoicing and consolidating customer/vehicle data.</p>
+            <p><span class="text-slate-200 font-semibold">Challenges:</span> Designing a relational schema that cleanly linked customers, vehicles, jobs, and inventory while keeping queries fast.</p>
+            <p><span class="text-slate-200 font-semibold">Outcome:</span> Reduced manual billing errors and gave the garage a searchable, complete service history for every vehicle.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: Stock Market Prediction -->
+      <div class="glass-card rounded-2xl overflow-hidden reveal-right">
+        <div class="h-48 bg-gradient-to-br from-secondary/30 via-accent/20 to-primary/20 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-slate-300/60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 17l6-6 4 4 8-8M21 7v6h-6" /></svg>
+        </div>
+        <div class="p-7">
+          <p class="text-accent text-xs font-semibold uppercase tracking-wide mb-2">September 2024</p>
+          <h3 class="font-heading font-bold text-xl mb-3">Stock Market Prediction Using ML</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            A deep learning model using RNN and LSTM networks for real-time stock market forecasting, backed by
+            an automated data pipeline for live market data.
+          </p>
+          <ul class="text-slate-400 text-sm space-y-1.5 mb-5 list-disc list-inside">
+            <li>RNN &amp; LSTM networks for time-series forecasting</li>
+            <li>Automated pipeline to acquire, clean, and pre-process live API data</li>
+            <li>Performance benchmarked against traditional statistical models</li>
+          </ul>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="glass px-3 py-1 rounded-full text-xs font-medium">Python</span>
+            <span class="glass px-3 py-1 rounded-full text-xs font-medium">LSTM / RNN</span>
+            <span class="glass px-3 py-1 rounded-full text-xs font-medium">VS Code</span>
+          </div>
+
+          <div class="flex flex-wrap gap-3 mb-5">
+            <a href="https://github.com/VishalAdsule" target="_blank" rel="noopener" class="btn-outline glass px-5 py-2.5 rounded-full text-xs font-semibold inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+            <button type="button" class="project-details-toggle btn-outline glass px-5 py-2.5 rounded-full text-xs font-semibold inline-flex items-center gap-2" data-target="details-2">
+              <span class="toggle-label">View Details</span>
+              <svg class="toggle-icon h-3.5 w-3.5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+          </div>
+
+          <div id="details-2" class="hidden border-t border-white/10 pt-5 text-sm text-slate-400 space-y-3">
+            <p><span class="text-slate-200 font-semibold">Problem:</span> Traditional statistical models struggled to capture the non-linear patterns in live stock market data.</p>
+            <p><span class="text-slate-200 font-semibold">Solution:</span> Built an LSTM/RNN deep learning pipeline that ingests live API data, pre-processes it automatically, and forecasts trends.</p>
+            <p><span class="text-slate-200 font-semibold">Challenges:</span> Cleaning noisy live data in real time and tuning the LSTM architecture for accuracy without overfitting.</p>
+            <p><span class="text-slate-200 font-semibold">Outcome:</span> The LSTM model outperformed traditional statistical baselines in forecasting accuracy across the evaluation period.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================== INTERNSHIP ============================== -->
+<section id="internship" class="py-28 px-6 lg:px-10">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-eyebrow text-accent font-semibold text-sm mb-3 uppercase">Experience</p>
+      <h2 class="font-heading font-bold text-4xl sm:text-5xl">Internship <span class="gradient-text">Experience</span></h2>
+    </div>
+
+    <div class="glass-card rounded-2xl p-8 sm:p-10 reveal-scale">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+        <div>
+          <h3 class="font-heading font-bold text-2xl">KasNet Technologies Pvt. Ltd</h3>
+          <p class="text-slate-400 text-sm mt-1">Pune, Maharashtra · Azure Fundamentals &amp; Power BI</p>
+        </div>
+        <span class="glass px-4 py-2 rounded-full text-xs font-semibold text-accent whitespace-nowrap">May 2020 – Aug 2020</span>
+      </div>
+
+      <h4 class="font-heading font-semibold text-sm uppercase tracking-wide text-slate-300 mb-3">Responsibilities &amp; Achievements</h4>
+      <ul class="text-slate-300 text-sm space-y-2.5 mb-6 list-disc list-inside">
+        <li>Interned in Cloud Computing and Data Visualization using Power BI</li>
+        <li>Gained hands-on experience with cloud technologies and core Azure concepts</li>
+        <li>Developed business intelligence skills to support data-driven decision-making</li>
+      </ul>
+
+      <h4 class="font-heading font-semibold text-sm uppercase tracking-wide text-slate-300 mb-3">Technologies Used</h4>
+      <div class="flex flex-wrap gap-2">
+        <span class="glass px-3 py-1 rounded-full text-xs font-medium">Microsoft Azure</span>
+        <span class="glass px-3 py-1 rounded-full text-xs font-medium">Power BI</span>
+        <span class="glass px-3 py-1 rounded-full text-xs font-medium">Cloud Computing</span>
+        <span class="glass px-3 py-1 rounded-full text-xs font-medium">Data Visualization</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CERTIFICATIONS ============================== -->
+<section id="certifications" class="py-28 px-6 lg:px-10 bg-card/30">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-eyebrow text-accent font-semibold text-sm mb-3 uppercase">Certifications</p>
+      <h2 class="font-heading font-bold text-4xl sm:text-5xl">Verified <span class="gradient-text">Knowledge</span></h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-7">
+      <div class="glass-card card-glow rounded-2xl p-7 reveal-left">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 8l-4 4 4 4" /></svg>
+        </div>
+        <h3 class="font-heading font-bold text-lg mb-2">Java Programming — Basic to Master</h3>
+        <p class="text-slate-400 text-sm mb-3">Udemy · Instructor: Abdul Bari</p>
+        <p class="text-slate-300 text-sm leading-relaxed">
+          Completed a comprehensive Udemy-certified course covering Java programming from foundational syntax to
+          advanced, master-level concepts.
+        </p>
+      </div>
+
+      <div class="glass-card card-glow rounded-2xl p-7 reveal-right">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-primary flex items-center justify-center mb-5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 001-9.9 5.5 5.5 0 00-10.5-2A4.5 4.5 0 003 15z" /></svg>
+        </div>
+        <h3 class="font-heading font-bold text-lg mb-2">AZ-900: Microsoft Azure Fundamentals</h3>
+        <p class="text-slate-400 text-sm mb-3">Instructor: Amol Ahire · Dec 2023 – Feb 2024 · Pune, Maharashtra</p>
+        <p class="text-slate-300 text-sm leading-relaxed">
+          Demonstrated foundational knowledge of cloud services and Microsoft Azure, including core Azure
+          services, cloud concepts, security, and pricing.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== RESUME ============================== -->
+<section id="resume" class="py-28 px-6 lg:px-10">
+  <div class="max-w-4xl mx-auto text-center">
+    <div class="reveal">
+      <p class="section-eyebrow text-accent font-semibold text-sm mb-3 uppercase">Resume</p>
+      <h2 class="font-heading font-bold text-4xl sm:text-5xl mb-6">My Full <span class="gradient-text">Resume</span></h2>
+      <p class="text-slate-400 max-w-xl mx-auto mb-10">
+        Get the complete picture of my education, experience, and skills — download a copy or print it directly.
       </p>
-      <ul class="text-sm text-[var(--mute)] space-y-1.5 mb-5">
-        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Automated pipeline for acquiring, cleaning, pre-processing live data</li>
-        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>LSTM benchmarked against traditional statistical models</li>
-        <li class="flex gap-2"><span class="text-[var(--acid)]">›</span>Owned the full lifecycle, data to evaluation</li>
-      </ul>
-      <div class="flex flex-wrap gap-2 mono text-xs">
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Python</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">LSTM / RNN</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">VS Code</span>
+    </div>
+
+    <div class="glass-card rounded-2xl p-10 reveal-scale">
+      <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
       </div>
-    </article>
-  </div>
-</section>
-
-<section id="skills" class="max-w-6xl mx-auto px-6 pb-28 reveal">
-  <p class="mono text-xs text-[var(--mute)] mb-2">03 / stack</p>
-  <h2 class="text-3xl font-bold mb-10">Skills</h2>
-
-  <div class="grid md:grid-cols-2 gap-x-12 gap-y-5" id="skill-bars">
-    <div class="skill-row">
-      <div class="flex justify-between mono text-xs mb-2"><span>Java</span><span class="text-[var(--acid)]">90%</span></div>
-      <div class="h-1.5 rounded-full bg-[var(--panel2)] overflow-hidden"><div class="skill-bar-fill h-full bg-[var(--acid)]" data-width="90"></div></div>
-    </div>
-    <div class="skill-row">
-      <div class="flex justify-between mono text-xs mb-2"><span>Python</span><span class="text-[var(--acid)]">80%</span></div>
-      <div class="h-1.5 rounded-full bg-[var(--panel2)] overflow-hidden"><div class="skill-bar-fill h-full bg-[var(--acid)]" data-width="80"></div></div>
-    </div>
-    <div class="skill-row">
-      <div class="flex justify-between mono text-xs mb-2"><span>SQL</span><span class="text-[var(--acid)]">78%</span></div>
-      <div class="h-1.5 rounded-full bg-[var(--panel2)] overflow-hidden"><div class="skill-bar-fill h-full bg-[var(--acid)]" data-width="78"></div></div>
-    </div>
-    <div class="skill-row">
-      <div class="flex justify-between mono text-xs mb-2"><span>JavaScript / HTML / CSS</span><span class="text-[var(--acid)]">70%</span></div>
-      <div class="h-1.5 rounded-full bg-[var(--panel2)] overflow-hidden"><div class="skill-bar-fill h-full bg-[var(--acid)]" data-width="70"></div></div>
-    </div>
-  </div>
-
-  <div class="grid sm:grid-cols-2 gap-6 mt-12">
-    <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-6 hover:border-[var(--acid)]/50 transition">
-      <h3 class="mono text-xs text-[var(--acid)] mb-4">DEVELOPER TOOLS</h3>
-      <div class="flex flex-wrap gap-2 mono text-xs">
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">VS Code</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">IntelliJ IDEA</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Eclipse</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">MySQL Workbench</span>
-      </div>
-    </div>
-    <div class="rounded-xl border border-[var(--line)] bg-[var(--panel)] p-6 hover:border-[var(--acid)]/50 transition">
-      <h3 class="mono text-xs text-[var(--acid)] mb-4">FRAMEWORKS &amp; TECH</h3>
-      <div class="flex flex-wrap gap-2 mono text-xs">
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">JDBC</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Git</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">GitHub</span>
-        <span class="px-2 py-1 bg-[var(--panel2)] border border-[var(--line)] rounded">Figma</span>
+      <h3 class="font-heading font-semibold text-xl mb-2">Vishal_Adsule_Resume.pdf</h3>
+      <p class="text-slate-500 text-sm mb-8">Java Developer · Updated 2025</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="assets/resume/Vishal_Adsule_Resume.pdf" download class="btn-primary text-sm font-semibold px-7 py-3.5 rounded-full inline-flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" /></svg>
+          Download Resume
+        </a>
+        <button id="print-resume" type="button" class="btn-outline glass text-sm font-semibold px-7 py-3.5 rounded-full inline-flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a1 1 0 001-1v-4H8v4a1 1 0 001 1zM7 9V4a1 1 0 011-1h8a1 1 0 011 1v5" /></svg>
+          Print Resume
+        </button>
       </div>
     </div>
   </div>
 </section>
 
-<section id="certs" class="max-w-6xl mx-auto px-6 pb-28 reveal">
-  <p class="mono text-xs text-[var(--mute)] mb-2">04 / credentials</p>
-  <h2 class="text-3xl font-bold mb-10">Education &amp; certifications</h2>
+<!-- ============================== CONTACT ============================== -->
+<section id="contact" class="py-28 px-6 lg:px-10 bg-card/30">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-eyebrow text-accent font-semibold text-sm mb-3 uppercase">Contact</p>
+      <h2 class="font-heading font-bold text-4xl sm:text-5xl">Let's Build Something <span class="gradient-text">Together</span></h2>
+    </div>
 
-  <div class="space-y-3" id="cred-list">
-    <details class="group rounded-xl border border-[var(--line)] bg-[var(--panel)] hover:border-[var(--acid)]/40 transition" open>
-      <summary class="flex items-center justify-between p-5">
-        <div>
-          <h3 class="font-semibold">B.E. Electronics &amp; Telecommunication</h3>
-          <p class="text-sm text-[var(--mute)]">Smt. Kashibai Navale College of Engineering, Pune</p>
+    <div class="grid lg:grid-cols-5 gap-10">
+      <!-- Contact Info -->
+      <div class="lg:col-span-2 space-y-5 reveal-left">
+        <div class="glass-card rounded-2xl p-6 flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          </div>
+          <div>
+            <p class="text-xs text-slate-400 uppercase tracking-wide mb-0.5">Email</p>
+            <a href="mailto:vishal25adsule2003@gmail.com" class="text-sm font-medium hover:text-accent transition-colors break-all">vishal25adsule2003@gmail.com</a>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="mono text-xs text-[var(--mute)] hidden sm:block">Dec 2021 — June 2025</span>
-          <svg class="chev w-4 h-4 text-[var(--acid)] transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-        </div>
-      </summary>
-      <p class="px-5 pb-5 text-sm text-[var(--mute)] border-t border-[var(--line)] pt-4">Bachelor's degree covering core electronics, telecom systems, and programming fundamentals — the foundation for the move into software development.</p>
-    </details>
 
-    <details class="group rounded-xl border border-[var(--line)] bg-[var(--panel)] hover:border-[var(--acid)]/40 transition">
-      <summary class="flex items-center justify-between p-5">
-        <div>
-          <h3 class="font-semibold">Java Programming, basic to master</h3>
-          <p class="text-sm text-[var(--mute)]">Udemy — Instructor Abdul Bari</p>
+        <div class="glass-card rounded-2xl p-6 flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-secondary to-accent flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+          </div>
+          <div>
+            <p class="text-xs text-slate-400 uppercase tracking-wide mb-0.5">Phone</p>
+            <a href="tel:+919637209446" class="text-sm font-medium hover:text-accent transition-colors">+91 96372 09446</a>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <svg class="chev w-4 h-4 text-[var(--acid)] transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-        </div>
-      </summary>
-      <p class="px-5 pb-5 text-sm text-[var(--mute)] border-t border-[var(--line)] pt-4">Completed a full Java certification course spanning core syntax through advanced OOP concepts.</p>
-    </details>
 
-    <details class="group rounded-xl border border-[var(--line)] bg-[var(--panel)] hover:border-[var(--acid)]/40 transition">
-      <summary class="flex items-center justify-between p-5">
-        <div>
-          <h3 class="font-semibold">AZ-900: Microsoft Azure Fundamentals</h3>
-          <p class="text-sm text-[var(--mute)]">Instructor Amol Ahire, Pune</p>
+        <div class="glass-card rounded-2xl p-6 flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-accent to-primary flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          </div>
+          <div>
+            <p class="text-xs text-slate-400 uppercase tracking-wide mb-0.5">GitHub</p>
+            <a href="https://github.com/VishalAdsule" target="_blank" rel="noopener" class="text-sm font-medium hover:text-accent transition-colors">github.com/VishalAdsule</a>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="mono text-xs text-[var(--mute)] hidden sm:block">Dec 2023 — Feb 2024</span>
-          <svg class="chev w-4 h-4 text-[var(--acid)] transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-        </div>
-      </summary>
-      <p class="px-5 pb-5 text-sm text-[var(--mute)] border-t border-[var(--line)] pt-4">Foundational knowledge of cloud services and Microsoft Azure, including core services, cloud concepts, security, and pricing.</p>
-    </details>
 
-    <details class="group rounded-xl border border-[var(--line)] bg-[var(--panel)] hover:border-[var(--acid)]/40 transition">
-      <summary class="flex items-center justify-between p-5">
-        <div>
-          <h3 class="font-semibold">Cloud Computing &amp; Data Visualization Intern</h3>
-          <p class="text-sm text-[var(--mute)]">KasNet Technologies Pvt. Ltd, Pune</p>
+        <div class="glass-card rounded-2xl p-6 flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.368-1.85 3.598 0 4.268 2.368 4.268 5.452v6.289zM5.337 7.433a2.062 2.062 0 11-.001-4.123 2.062 2.062 0 01.001 4.123zM7.119 20.452H3.554V9h3.565v11.452z"/></svg>
+          </div>
+          <div>
+            <p class="text-xs text-slate-400 uppercase tracking-wide mb-0.5">LinkedIn</p>
+            <a href="https://linkedin.com/in/vishaladsule/" target="_blank" rel="noopener" class="text-sm font-medium hover:text-accent transition-colors">linkedin.com/in/vishaladsule</a>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="mono text-xs text-[var(--mute)] hidden sm:block">May — Aug 2020</span>
-          <svg class="chev w-4 h-4 text-[var(--acid)] transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-        </div>
-      </summary>
-      <p class="px-5 pb-5 text-sm text-[var(--mute)] border-t border-[var(--line)] pt-4">Hands-on internship in cloud technologies and Power BI, building skills in business intelligence and data-driven decision-making.</p>
-    </details>
-  </div>
-</section>
 
-<section id="contact" class="max-w-6xl mx-auto px-6 pb-32 reveal">
-  <div class="rounded-2xl border border-[var(--line)] bg-[var(--panel)] p-10 md:p-14 text-center glow relative overflow-hidden">
-    <div class="absolute inset-0 grid-bg opacity-30 pointer-events-none" style="mask-image:radial-gradient(ellipse 60% 80% at 50% 50%, black, transparent)"></div>
-    <p class="mono text-xs text-[var(--acid)] mb-3 relative">// EOF — let's talk</p>
-    <h2 class="text-3xl md:text-4xl font-bold mb-4 relative">Open to Java developer roles</h2>
-    <p class="text-[var(--mute)] max-w-md mx-auto mb-9 text-sm relative">
-      Pune-based, ready to relocate or work remote. Reach out for opportunities,
-      collaborations, or just to talk about RNNs and garage billing systems.
-    </p>
-    <div class="flex flex-wrap justify-center gap-3 relative">
-      <a href="mailto:vishal25adsule2003@gmail.com" class="magnetic inline-block mono text-sm px-6 py-3 bg-[var(--acid)] text-[#0a0e14] rounded font-semibold hover:opacity-90 transition" data-cursor>
-        vishal25adsule2003@gmail.com
-      </a>
-      <a href="tel:+919637209446" class="magnetic inline-block mono text-sm px-6 py-3 bg-[var(--panel2)] border border-[var(--line)] rounded hover:border-[var(--acid)] transition" data-cursor>
-        +91 96372 09446
-      </a>
+        <div class="glass-card rounded-2xl p-6 flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-secondary to-primary flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+          </div>
+          <div>
+            <p class="text-xs text-slate-400 uppercase tracking-wide mb-0.5">Location</p>
+            <p class="text-sm font-medium">Vadgaon, Pune, Maharashtra</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="lg:col-span-3 reveal-right">
+        <form id="contact-form" class="glass-card rounded-2xl p-8 space-y-5">
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label for="name" class="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wide">Name</label>
+              <input type="text" id="name" name="name" required class="w-full bg-bgdark/60 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent outline-none transition-colors" placeholder="Your full name" />
+            </div>
+            <div>
+              <label for="email" class="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wide">Email</label>
+              <input type="email" id="email" name="email" required class="w-full bg-bgdark/60 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent outline-none transition-colors" placeholder="you@example.com" />
+            </div>
+          </div>
+          <div>
+            <label for="subject" class="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wide">Subject</label>
+            <input type="text" id="subject" name="subject" required class="w-full bg-bgdark/60 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent outline-none transition-colors" placeholder="What's this about?" />
+          </div>
+          <div>
+            <label for="message" class="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wide">Message</label>
+            <textarea id="message" name="message" required rows="5" class="w-full bg-bgdark/60 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent outline-none transition-colors resize-none" placeholder="Tell me about your project or opportunity..."></textarea>
+          </div>
+          <p id="form-status" class="hidden text-sm font-medium"></p>
+          <button type="submit" class="btn-primary w-full sm:w-auto text-sm font-semibold px-8 py-3.5 rounded-full inline-flex items-center justify-center gap-2">
+            Send Message
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </section>
 
-<footer class="border-t border-[var(--line)] py-8 relative">
-  <p class="text-center mono text-xs text-[var(--mute)]">© 2026 Vishal Adsule — built with Java-grade discipline, Tailwind, and one too many late nights.</p>
+</main>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="border-t border-white/10 pt-16 pb-8 px-6 lg:px-10">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid sm:grid-cols-3 gap-10 mb-12">
+      <div>
+        <a href="#home" class="font-heading font-bold text-xl tracking-tight">
+          <span class="gradient-text">VA</span><span class="text-txt">.dev</span>
+        </a>
+        <p class="text-slate-400 text-sm mt-4 leading-relaxed max-w-xs">
+          Java Developer building practical, data-driven applications. Always open to interesting problems
+          and new opportunities.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-heading font-semibold text-sm uppercase tracking-wide mb-5">Quick Links</h4>
+        <ul class="space-y-2.5 text-sm text-slate-400">
+          <li><a href="#about" class="hover:text-accent transition-colors">About</a></li>
+          <li><a href="#projects" class="hover:text-accent transition-colors">Projects</a></li>
+          <li><a href="#skills" class="hover:text-accent transition-colors">Skills</a></li>
+          <li><a href="#contact" class="hover:text-accent transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-heading font-semibold text-sm uppercase tracking-wide mb-5">Connect</h4>
+        <div class="flex items-center gap-4">
+          <a href="https://github.com/VishalAdsule" target="_blank" rel="noopener" aria-label="GitHub" class="text-slate-400 hover:text-accent transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="https://linkedin.com/in/vishaladsule/" target="_blank" rel="noopener" aria-label="LinkedIn" class="text-slate-400 hover:text-accent transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.368-1.85 3.598 0 4.268 2.368 4.268 5.452v6.289zM5.337 7.433a2.062 2.062 0 11-.001-4.123 2.062 2.062 0 01.001 4.123zM7.119 20.452H3.554V9h3.565v11.452z"/></svg>
+          </a>
+          <a href="mailto:vishal25adsule2003@gmail.com" aria-label="Email" class="text-slate-400 hover:text-accent transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-slate-500 text-xs">&copy; <span id="current-year">2026</span> Vishal Adsule. All rights reserved.</p>
+      <p class="text-slate-500 text-xs">Built with HTML, Tailwind CSS &amp; JavaScript.</p>
+    </div>
+  </div>
 </footer>
 
-<script>
-  const progress = document.getElementById('progress');
-  window.addEventListener('scroll', ()=>{
-    const h = document.documentElement;
-    const pct = (h.scrollTop)/(h.scrollHeight - h.clientHeight) * 100;
-    progress.style.width = pct + '%';
-  });
+<!-- Back to Top -->
+<button id="back-to-top" aria-label="Back to top" class="fixed bottom-7 right-7 z-40 w-12 h-12 rounded-full btn-primary flex items-center justify-center shadow-lg">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+</button>
 
-  let lastY = window.scrollY;
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', ()=>{
-    const y = window.scrollY;
-    if(y > lastY && y > 120){ navbar.style.transform = 'translateY(-100%)'; }
-    else { navbar.style.transform = 'translateY(0)'; }
-    lastY = y;
-  });
-
-  const menuBtn = document.getElementById('menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  menuBtn.addEventListener('click', ()=>{
-    mobileMenu.classList.toggle('hidden');
-    mobileMenu.classList.toggle('flex');
-  });
-  document.querySelectorAll('.mobile-link').forEach(l=>l.addEventListener('click', ()=>{
-    mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('flex');
-  }));
-
-  const sections = ['about','projects','skills','certs','contact'].map(id=>document.getElementById(id));
-  const navlinks = document.querySelectorAll('.navlink');
-  const navObserver = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        navlinks.forEach(l=>l.classList.remove('active'));
-        const match = document.querySelector(`.navlink[href="#${e.target.id}"]`);
-        if(match) match.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-40% 0px -50% 0px' });
-  sections.forEach(s=>s && navObserver.observe(s));
-
-  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  revealEls.forEach(i=>io.observe(i));
-
-  window.addEventListener('DOMContentLoaded', ()=>{
-    document.querySelectorAll('.reveal-up').forEach((el,i)=>{
-      el.style.transform = 'translateY(110%)';
-      el.style.transition = `transform .8s cubic-bezier(.16,1,.3,1) ${i*0.12+0.1}s`;
-      requestAnimationFrame(()=> requestAnimationFrame(()=>{ el.style.transform='translateY(0)'; }));
-    });
-    document.getElementById('hero-eyebrow').style.transition='opacity .6s ease .5s';
-    requestAnimationFrame(()=> requestAnimationFrame(()=>{ document.getElementById('hero-eyebrow').style.opacity=1; }));
-  });
-
-  const skillSection = document.getElementById('skill-bars');
-  const skillObserver = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        document.querySelectorAll('.skill-bar-fill').forEach(bar=>{
-          bar.style.width = bar.dataset.width + '%';
-        });
-        skillObserver.disconnect();
-      }
-    });
-  }, { threshold: 0.3 });
-  if(skillSection) skillObserver.observe(skillSection);
-
-  const counters = document.querySelectorAll('.counter');
-  const counterObserver = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        const el = e.target;
-        const target = +el.dataset.target;
-        const dur = 1200;
-        const start = performance.now();
-        function tick(now){
-          const p = Math.min((now-start)/dur, 1);
-          el.textContent = Math.floor(p*target);
-          if(p<1) requestAnimationFrame(tick); else el.textContent = target;
-        }
-        requestAnimationFrame(tick);
-        counterObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.5 });
-  counters.forEach(c=>counterObserver.observe(c));
-
-  document.querySelectorAll('.tilt-card').forEach(card=>{
-    card.addEventListener('mousemove', (e)=>{
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left)/r.width - 0.5;
-      const y = (e.clientY - r.top)/r.height - 0.5;
-      card.style.transform = `perspective(800px) rotateY(${x*4}deg) rotateX(${-y*4}deg) translateY(-2px)`;
-    });
-    card.addEventListener('mouseleave', ()=>{ card.style.transform = 'perspective(800px) rotateY(0) rotateX(0)'; });
-  });
-
-  document.querySelectorAll('.magnetic').forEach(btn=>{
-    btn.addEventListener('mousemove', (e)=>{
-      const r = btn.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width/2;
-      const y = e.clientY - r.top - r.height/2;
-      btn.style.transform = `translate(${x*0.18}px, ${y*0.3}px)`;
-    });
-    btn.addEventListener('mouseleave', ()=>{ btn.style.transform = 'translate(0,0)'; });
-  });
-
-  const dot = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-  if(window.matchMedia('(min-width:769px)').matches){
-    let rx=0, ry=0, mx=0, my=0;
-    window.addEventListener('mousemove', (e)=>{
-      dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px';
-      mx = e.clientX; my = e.clientY;
-    });
-    function ringLoop(){
-      rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
-      ring.style.left = rx+'px'; ring.style.top = ry+'px';
-      requestAnimationFrame(ringLoop);
-    }
-    ringLoop();
-    document.querySelectorAll('[data-cursor]').forEach(el=>{
-      el.addEventListener('mouseenter', ()=> document.body.classList.add('cursor-grow'));
-      el.addEventListener('mouseleave', ()=> document.body.classList.remove('cursor-grow'));
-    });
-    document.querySelectorAll('[data-cursor-grow]').forEach(el=>{
-      el.addEventListener('mouseenter', ()=> document.body.classList.add('cursor-grow'));
-      el.addEventListener('mouseleave', ()=> document.body.classList.remove('cursor-grow'));
-    });
-  }
-
-  function copyEmail(btn){
-    navigator.clipboard.writeText('vishal25adsule2003@gmail.com');
-    const wrap = btn.closest('.copy-wrap');
-    wrap.classList.add('show-tip');
-    setTimeout(()=> wrap.classList.remove('show-tip'), 1500);
-  }
-</script>
+<script src="js/script.js"></script>
 </body>
 </html>
